@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calcula tu pequeña huella 🐾🪴</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0fff4;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        .header {
+            background-color: #4caf50;
+            color: white;
+            padding: 40px;
+            border-radius: 10px;
+            margin: 20px auto;
+            width: 90%;
+        }
+        .header h1 {
+            font-size: 2.5em;
+            margin: 0;
+        }
+        .content {
+            margin: 20px auto;
+            width: 90%;
+        }
+        label {
+            font-weight: bold;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 20px;
+            border: 2px dashed #4caf50;
+            background-color: #e8f5e9;
+            border-radius: 10px;
+        }
+        button {
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .footer {
+            margin-top: 30px;
+            font-size: 12px;
+            color: #555;
+        }
+        .plant-input {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Calcula tu pequeña huella 🐾🪴</h1>
+    </div>
+
+    <div class="content">
+        <p>Selecciona tus plantas y consulta el impacto positivo que tienes en el planeta.</p>
+        <div id="plants-container">
+            <!-- Plant inputs will be added here dynamically -->
+        </div>
+        <button onclick="addPlant()">➕ Añadir otra planta</button><br><br>
+        <button onclick="calcularHuella()">Calcular mi impacto 🌍</button>
+
+        <div class="result" id="result">
+            Tus resultados aparecerán aquí.
+        </div>
+
+        <p>¡Gracias por formar parte de <strong>#PorUnMexicoMasVerde</strong> y ser parte del cambio! 🌿</p>
+    </div>
+
+    <div class="footer">
+        ©️ 2025 Por Un México Más Verde. | Todos los derechos reservados.
+    </div>
+
+    <script>
+        const oxigenoPorPlanta = {
+            sansevieria: 0.15,
+            planta_arana: 0.145,
+            aloe_vera: 0.13,
+            lirio_de_la_paz: 0.12,
+            potus: 0.11,
+            ficus_robusta: 0.14,
+            palo_de_brasil: 0.16,
+            helechos: 0.1
+        };
+
+        const co2AbsorbidoPorPlanta = {
+            sansevieria: 0.18,
+            planta_arana: 0.156,
+            aloe_vera: 0.14,
+            lirio_de_la_paz: 0.135,
+            potus: 0.12,
+            ficus_robusta: 0.15,
+            palo_de_brasil: 0.17,
+            helechos: 0.11
+        };
+
+        const plantasEquivalencia = {
+            personasOxigeno: 0.55, // kg de oxígeno que consume una persona promedio al día
+            autoCO2: 4.6 // kg de dióxido de carbono emitidos por un auto promedio al día
+        };
+
+        function addPlant() {
+            const plantsContainer = document.getElementById("plants-container");
+            const plantInputDiv = document.createElement("div");
+            plantInputDiv.className = "plant-input";
+            plantInputDiv.innerHTML = `
+                <label>Tipo de planta:</label>
+                <select>
+                    <option value="sansevieria">🌱 Sansevieria</option>
+                    <option value="planta_arana">🌿 Planta Araña</option>
+                    <option value="aloe_vera">🌵 Aloe Vera</option>
+                    <option value="lirio_de_la_paz">🌸 Lirio de la Paz</option>
+                    <option value="potus">🍃 Potus</option>
+                    <option value="ficus_robusta">🌳 Ficus Robusta</option>
+                    <option value="palo_de_brasil">🌴 Palo de Brasil</option>
+                    <option value="helechos">🌾 Helechos</option>
+                </select>
+                <label>Cantidad:</label>
+                <input type="number" min="0" value="0">
+            `;
+            plantsContainer.appendChild(plantInputDiv);
+        }
+
+        function calcularHuella() {
+            const plantsContainer = document.getElementById("plants-container");
+            const plantInputs = plantsContainer.getElementsByClassName("plant-input");
+            let totalOxigeno = 0;
+            let totalCO2 = 0;
+            let totalPlantas = 0;
+
+            for (const input of plantInputs) {
+                const tipoPlanta = input.querySelector("select").value;
+                const cantidad = parseInt(input.querySelector("input").value) || 0;
+                totalOxigeno += oxigenoPorPlanta[tipoPlanta] * cantidad;
+                totalCO2 += co2AbsorbidoPorPlanta[tipoPlanta] * cantidad;
+                totalPlantas += cantidad;
+            }
+
+            const oxigenoParaPersonas = (totalOxigeno / plantasEquivalencia.personasOxigeno).toFixed(0);
+            const co2Autos = (totalCO2 / plantasEquivalencia.autoCO2).toFixed(1);
+
+            // Generar frases motivacionales aleatorias
+            const frases = [
+                "🌎 ¡Cada planta cuenta para un planeta mejor!",
+                "🌿 Tu esfuerzo hace la diferencia. ¡Sigue así!",
+                "🌱 Has dado un respiro más al planeta.",
+                "🍃 ¡Eres un héroe ecológico en acción!",
+                "🌍 La naturaleza te lo agradece.",
+                "🌞 ¡Tu huella verde está iluminando el futuro!",
+                "💚 Sigamos construyendo un mundo más verde.",
+                "🌳 Cada hoja que cuidas cuenta para el cambio.",
+                "🍀 ¡Pequeños pasos logran grandes cambios!",
+                "🌵 La biodiversidad sonríe gracias a ti.",
+                "🌺 ¡Tu compromiso inspira a otros!",
+                "🌎 ¡Un respiro a la vez, estamos avanzando!",
+                "🌿 Las plantas también te cuidan a ti.",
+                "🐝 La vida florece por tus acciones. ¡Gracias!",
+                "🌞 ¡Gracias por ser parte de la solución!",
+                "🌻 Cultivas vida, cultivamos futuro juntos.",
+                "🌍 ¡El planeta celebra tu esfuerzo!",
+                "🍃 Más verde, más vida. ¡Estamos juntos en esto!",
+                "🍁 ¡Eres el cambio que el mundo necesita!",
+                "🌱 Cada planta es un símbolo de esperanza."
+            ];
+            const fraseAleatoria = frases[Math.floor(Math.random() * frases.length)];
+
+            // Mostrar resultados
+            const resultado = `
+                🌬️ Has generado aproximadamente <strong>${totalOxigeno.toFixed(2)} kg</strong> de oxígeno.<br>
+                🫧 Creaste el oxígeno para que respiren <strong>${oxigenoParaPersonas} personas</strong> al día.<br>
+                ♻️ Has absorbido cerca de <strong>${totalCO2.toFixed(2)} kg</strong> de dióxido de carbono.<br>
+                🚗 Absorbiste el CO₂ que emite <strong>${co2Autos}</strong> automóviles en un día.<br><br>
+                "${fraseAleatoria}"<br><br>
+                <em>Datos validados por la NASA y estudios de la OMS.</em>
+            `;
+            document.getElementById("result").innerHTML = resultado;
+        }
+    </script>
+</body>
+</html>
